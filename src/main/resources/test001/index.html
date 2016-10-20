@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/sockjs.min.js"></script>
+    <script src="js/stomp.min.js"></script>
+</head>
+<script>
+    var sock = new SockJS('http://localhost:9090/notice');
+    sock.onopen = function() {
+        var client = Stomp.over(sock);
+        client.subscribe("/topic/notice/5788dbd970f00b24c2812c54", callback);
+        client.subscribe("/topic//all", callback);
+        function callback(msg){
+            console.log(msg);
+        }
+    };
+    sock.onmessage = function(e) {
+        console.log('message', e.data);
+    };
+    sock.onclose = function() {
+        console.log('close');
+    };
+</script>
+<body>
+
+</body>
+</html>
